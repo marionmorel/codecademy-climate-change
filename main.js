@@ -8,8 +8,30 @@ let climate_daly_data = [
     {region: "High income countries", deaths: 0.23}
 ];
 
-
 let toggleClass = (i,toggle) => {
 d3.select("#viz div:nth-child("+ i +")").classed("highlightBar",toggle);
 d3.select("#legend li:nth-child("+ i +")").classed("highlightText",toggle);
 };
+
+let divSelection = d3.select("#viz")
+                     .selectAll("div")
+
+divSelection.data(climate_daly_data)
+            .enter()
+            .append("div")
+            .attr("class", "bar")
+            .style("width", (d) => {return d.deaths * 8 + 'px'})
+            .on("mouseover", (d, i) => {toggleClass(i + 1, true)})
+            .on("mouseout", (d, i) => {toggleClass(i + 1, false)})
+
+let listSelection = d3.select("#legend")
+                      .selectAll("li")
+
+listSelection.data(climate_daly_data)
+             .enter()
+             .append("li")
+             .text( (d) => {return d.region + " : " + d.deaths + " deaths"})
+             .on("mouseover", (d, i) => {toggleClass(i + 1, true)})
+             .on("mouseout", (d, i) => {toggleClass(i + 1, false)})
+                     
+                    
